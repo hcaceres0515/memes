@@ -1,0 +1,310 @@
+<head>
+	<title>Html to image </title>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+<script src="js/html2canvas.js" type="text/javascript"></script>
+
+</head>
+
+<style>
+	
+		.message{
+		position: absolute;
+    	color: black;   
+		margin: 20px;
+		font-size: 20px;
+		/*left: 0;		
+		text-align: center;
+		top: 30px;
+		width: 100%;	*/
+		width: 45%;
+		font-family: monospace;
+	}
+	.message h3{
+		font-size: 40px;
+	}
+
+	.img-background img{
+	width: 100%;	
+	}
+
+	#html-content-holder, .container-carousel{
+		background-color: #F0F0F1;
+    	color: #00cc65;
+    	width: 450px;
+    /* padding-left: 25px; */
+    	padding: 10px;
+    	margin: 0 auto;
+	}
+
+	button, a{
+		margin: 10px;
+	}
+
+</style>
+
+<script>
+
+	$(document).ready(function(){
+		$('#btn').click(function(){
+			
+			var option = $('input[name="optradio"]:checked').val();
+
+			if($('input[name="optradio"]:checked').length > 0){				
+
+				load_message(option);	
+				
+
+			}else{
+    			alert("Seleccione una opcion");
+			}			
+			
+		});        
+    });
+
+    function load_message(degreeID){
+
+    	$("#content_carousel").html('');
+   
+
+    	$.post("connection.php?action=get_message_image",{
+    		option: degreeID
+		},function(data){
+			//console.log(data.degree_tags);
+			var object = JSON.parse(data);
+			var degree_tags = object[0].degree_tags;
+			var array_tags = degree_tags.split(",");
+
+			
+			var source = "";
+
+			for (i = 0; i < array_tags.length; i++) { 
+				if(i == 0)
+					source += "<div class='item active'>";
+				else
+					source += "<div class='item'>";	
+				
+				source += "<div class='container-carousel'>";
+				source += "<div class='message'>";
+				source += "<p> Billy esta estudiando "+object[0].name +" </p>";
+				source += "<p>";
+				source +=  array_tags[i] + "<br>Se como billy , se parte de Uconecta";
+				source += "</p>";
+				source += "</div>";
+				source += "<div class='img-background'>";
+				source += "<img src = 'img/meme_fondo_2.jpg'/>";
+				source += "</div>";
+				source += "</div>";
+				source += "</div>";
+				$("#content_carousel").append(source);
+				source = "";
+			}
+			
+			//alert(object[0].name);
+			//$("#degree_name").append(object[0].name);
+			//$("#message_tags").append('<br> Billy '+object[0].tag + '<br>' + 'Se como billy , se parte de Uconecta') ;
+
+			$('#modal_image').modal('show');
+		});
+    }
+
+    function download_image(){
+    	
+    	console.log("Downloading");
+    	$.post("connection.php?action=download_image",{
+    		
+		},function(data){			
+			alert("The file was downloaded");
+		});
+    }
+
+	$(document).ready(function(){
+
+		var str = "";
+		$.post("connection.php?action=get_degree",{
+
+		},function(data){
+			var object =JSON.parse(data);
+			//console.log(tmp);
+			$.each(object, function(index, value) {
+	    		str += "<div class ='radio'>";
+	    		str += "<label><input type='radio' name='optradio' value='"+value.id+"'>"+value.name+"</label>";
+	    		str += "</div>";    		 		    		
+			}); 
+			$("#options_degree").append(str);
+		});
+
+	});
+
+
+	/*get html by class active $("#carousel-example-generic .carousel-inner .active").html()*/
+
+</script>
+
+<body>	
+	
+	<div  class="container">
+		<div class="row">
+			<div id="options_degree">
+				<!--<div class="radio">
+					<label><input type="radio" name="optradio">Option 1</label>
+				</div>	-->
+			</div>
+			<div class="btn-group">
+				<button type="button" class="btn btn-primary" id="btn">Elegir</button>				
+			</div>
+
+		</div>
+	</div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal_image">
+    	<div class="modal-dialog">
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    				<h4 class="modal-title">Uconecta - Comunidad internacional universitaria</h4>
+    			</div>
+    			<div class="modal-body">
+
+    				<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+
+
+
+    					<!-- Wrapper for slides -->
+    					<div class="carousel-inner" id="content_carousel">
+    						
+    					</div>
+
+    					<!-- Controls -->
+    					<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+    						<span class="glyphicon glyphicon-chevron-left"></span>
+    					</a>
+    					<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+    						<span class="glyphicon glyphicon-chevron-right"></span>
+    					</a>
+    				</div>
+
+    				
+
+    				<!--<button type="button" id="btn-Preview-Image" class="btn btn-info">Preview</button>    	-->
+
+
+    			</div>
+    			<div class="modal-footer">
+    				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+    				<a  id="btn-Convert-Html2Image" class="btn btn-success">Download</a>
+    			</div>
+    		</div><!-- /.modal-content -->
+    	</div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+	<div class="container">
+		<input id="sortpicture" type="file" name="sortpic" />
+		<button id="upload">Upload</button>
+	</div>
+
+
+</body>
+
+<script type="text/javascript">
+	
+	$(document).ready(function (e) {
+		
+		$('#upload').on('click', function() {
+			var file_data = $('#sortpicture').prop('files')[0];   
+			var form_data = new FormData();                  
+			form_data.append('file', file_data);
+			console.log(form_data);                            
+			$.ajax({
+                url: 'connection.php?action=save_image', // point to server-side PHP script 
+                dataType: 'text',  // what to expect back from the PHP script, if anything
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: form_data,                         
+                type: 'post',
+                success: function(php_script_response){
+                    alert(php_script_response); // display response from the PHP script, if any
+                }
+            });
+		});
+
+	});
+
+</script>
+
+
+<script type="text/javascript">
+
+	//*
+
+var getCanvas; // global variable
+ 
+    $("#btn-Preview-Image").on('click', function () {
+    	
+    	var element = $("#carousel-example-generic .carousel-inner .active"); // global variable
+         html2canvas(element, {
+         onrendered: function (canvas) {
+                var a = document.createElement('a');                                
+        		// toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+        		a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+        		a.download = 'somefilename.jpg';
+        		a.click();
+                
+             }
+             
+         });
+
+    });
+
+
+function send_image(dataURL){
+	//console.log(dataURL);
+
+	$.ajax({
+		type: "POST",
+		url: "connection.php?action=save_image",
+		data: { 
+			imgBase64: dataURL
+		}
+	}).done(function(data) {
+		console.log('saved'); 
+		//alert(data);
+
+});
+
+	
+}
+
+
+$("#btn-Convert-Html2Image").on('click', function () {
+
+	var element = $("#carousel-example-generic .carousel-inner .active"); // global variable
+         html2canvas(element, {
+         onrendered: function (canvas) {
+                var a = document.createElement('a');
+        		// toDataURL defaults to png, so we need to request a jpeg, then convert for file download.
+        		//a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+        		//a.download = 'somefilename.jpg';
+        		//a.click();
+                send_image(canvas.toDataURL("image/png"));
+             }
+             
+         });
+
+	//var imgageData = getCanvas.toDataURL("image/png");
+    // Now browser starts downloading it instead of just showing it
+    //var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
+    //$("#btn-Convert-Html2Image").attr("download", "meme.png").attr("href", newData);
+});
+//*
+
+
+</script>

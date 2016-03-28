@@ -1,0 +1,73 @@
+<head>
+	<title>Html to image </title>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+
+
+</head>
+
+<style>
+	.message{
+	position: absolute;
+    	color: white;   
+	margin: 20px;
+	font-size: 40px;	
+	}
+
+	.img-background img{
+	width: 100%;	
+	}
+</style>
+
+<script>
+
+$(window).load(function(){
+        $('#myModal').modal('show');
+    });
+
+</script>
+
+<body>	
+	
+
+	<div class="modal fade" tabindex="-1" role="dialog" id="modal_image">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Uconecta - Comunidad internacional universitaria</h4>
+      </div>
+      <div class="modal-body">
+        
+	<div>
+		<div class="message">
+			<h3> No seas como billy </h3>
+			<br>
+			<h3> Corre a estudiar </h3>
+		</div>
+
+		<div class="img-background">
+			<img src = "img/profile.jpg"/>
+		</div>		
+		
+		
+	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary">Publicar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+	
+</body>
+
