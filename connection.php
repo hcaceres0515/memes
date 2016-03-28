@@ -99,7 +99,6 @@ header('Content-Type: text/html; charset=utf-8');
 			$_SESSION['data_image'] = $json;
 			mysql_close($this->dbhandle);	
 			echo json_encode($json);
-			
 		}
 
 
